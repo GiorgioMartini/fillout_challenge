@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+This project uses next.js, shadcn and tailwind.
+
+Whenever it makes sense, use the shad-cn components to ensure reusability and cohesion.
+
+If there is a ShatCN component that can do the job that we need, let's use that instead of creating something from scratch.
+
