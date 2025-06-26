@@ -59,7 +59,6 @@ export function SortablePageItem({
           "border border-[#E1E1E1]": !active,
         }
       )}
-      tabIndex={0}
       {...listeners}
       {...attributes}
       onFocus={(e) => {
