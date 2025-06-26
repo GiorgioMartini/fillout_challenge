@@ -45,9 +45,15 @@ export function SortablePageItem({
   return (
     <div
       ref={setNodeRef}
-      style={style}
+      style={{
+        ...style,
+        boxShadow: active ? "var(--shadow-elevation-1)" : undefined,
+        borderWidth: active ? 0.5 : undefined,
+        borderStyle: active ? "solid" : undefined,
+        borderColor: active ? "var(--border)" : undefined,
+      }}
       className={cn(
-        "flex items-center rounded-lg h-8 px-2.5 py-1 gap-1.5 select-none transition-all duration-150 whitespace-nowrap mx-1 border",
+        "flex items-center rounded-lg h-8 px-[10px] py-1 gap-2 select-none transition-all duration-150 whitespace-nowrap mx-1",
         {
           "bg-white": active,
           "bg-background-muted": !active,
@@ -65,9 +71,10 @@ export function SortablePageItem({
       <Button
         variant={"ghost"}
         onClick={onClick}
-        className={`px-0 py-0 h-8 min-w-0 text-[14px] font-medium leading-[1.43] tracking-[-0.015em] text-[#1A1A1A] bg-transparent shadow-none border-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none`}
+        className={`px-0 py-0 h-8 min-w-0 text-[14px] font-medium leading-[1.43] tracking-[-0.015em] bg-transparent shadow-none border-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none`}
         type="button"
         tabIndex={-1}
+        style={{ color: "var(--text-strong)" }}
       >
         {label}
       </Button>

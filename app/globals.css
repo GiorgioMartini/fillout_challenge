@@ -26,6 +26,8 @@
   --color-card: var(--card);
   --color-background-hover: var(--background-hover);
   --color-background-muted: var(--background-muted);
+  --color-shadow-elevation-1: var(--shadow-elevation-1);
+  --color-text-strong: var(--text-strong);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -56,6 +58,9 @@
   --icon-accent: #f59d0e;
   --background-hover: #f2f2f2;
   --background-muted: rgba(157, 164, 178, 0.15);
+  --shadow-elevation-1: 0px 1px 3px 0px rgba(0, 0, 0, 0.04),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.02);
+  --text-strong: #1a1a1a;
 }
 
 .dark {
