@@ -45,31 +45,20 @@ export function SortablePageItem({
   return (
     <div
       ref={setNodeRef}
-      style={{
-        ...style,
-        boxShadow:
-          !active && document.activeElement === null ? undefined : undefined,
-      }}
+      style={style}
       className={cn(
-        "flex items-center rounded-[8px] bg-white shadow-[0px_1px_3px_0px_rgba(0,0,0,0.04),0px_1px_1px_0px_rgba(0,0,0,0.02)] h-8 px-[10px] py-1 gap-[6px] select-none transition-all duration-150 whitespace-nowrap mx-1",
-        "hover:bg-[#F2F2F2]",
+        "flex items-center rounded-lg bg-white h-8 px-2.5 py-1 gap-1.5 select-none transition-all duration-150 whitespace-nowrap mx-1 border",
         {
-          "border-2 border-[#2F80ED] focus-visible:z-10": !active,
-          "border border-transparent": active,
-          "border border-[#E1E1E1]": !active,
+          "border-transparent": active,
+          "border-border": !active,
+          "bg-card": active,
+          "hover:bg-background-hover": !active,
+          "focus-visible:ring-4 focus-visible:ring-[#D1E9FF] focus-visible:border-ring focus-visible:z-10":
+            !active,
         }
       )}
       {...listeners}
       {...attributes}
-      onFocus={(e) => {
-        if (!active) {
-          e.currentTarget.style.boxShadow =
-            "0 0 0 4px #D1E9FF, 0 0 0 0 #2F80ED";
-        }
-      }}
-      onBlur={(e) => {
-        e.currentTarget.style.boxShadow = "none";
-      }}
     >
       <FileText size={20} style={{ color: "var(--icon-accent)" }} />
       <Button
@@ -87,7 +76,7 @@ export function SortablePageItem({
             <Button
               variant="ghost"
               size="icon"
-              className="h-auto px-1 py-1 text-[#9DA4B2] hover:text-gray-900"
+              className="h-auto px-1 py-1 text-muted-foreground hover:text-foreground"
             >
               <span className="sr-only">Open menu</span>
               <svg
@@ -113,7 +102,7 @@ export function SortablePageItem({
             <DropdownMenuItem>Copy</DropdownMenuItem>
             <DropdownMenuItem>Duplicate</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )}

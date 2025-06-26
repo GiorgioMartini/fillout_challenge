@@ -89,7 +89,7 @@ export default function PageMenu() {
         strategy={horizontalListSortingStrategy}
       >
         <nav
-          className="flex items-center p-2 bg-gray-50 rounded-lg"
+          className="flex items-center p-2 bg-card rounded-lg"
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AddPageSlot
