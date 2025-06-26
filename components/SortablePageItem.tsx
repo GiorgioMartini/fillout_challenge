@@ -42,6 +42,8 @@ export function SortablePageItem({
     opacity: isDragging ? 0 : 1,
   };
 
+  const [hover, setHover] = React.useState(false);
+
   return (
     <div
       ref={setNodeRef}
@@ -56,25 +58,34 @@ export function SortablePageItem({
         "flex items-center rounded-lg h-8 px-[10px] py-1 gap-2 select-none transition-all duration-150 whitespace-nowrap mx-1",
         {
           "bg-white": active,
-          "bg-background-muted": !active,
+          "bg-background-muted": !active && !hover,
+          "bg-background-hover-strong": !active && hover,
           "border-transparent": active,
           "border-border": !active,
-          "hover:bg-background-hover": !active,
           "focus-visible:ring-4 focus-visible:ring-[#D1E9FF] focus-visible:border-ring focus-visible:z-10":
             !active,
         }
       )}
       {...listeners}
       {...attributes}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
-      <FileText size={20} style={{ color: "var(--icon-accent)" }} />
+      <FileText
+        size={20}
+        style={{
+          color: hover && !active ? "var(--icon-hover)" : "var(--icon-accent)",
+        }}
+      />
       <Button
         variant={"ghost"}
         onClick={onClick}
         className={`px-0 py-0 h-8 min-w-0 text-[14px] font-medium leading-[1.43] tracking-[-0.015em] bg-transparent shadow-none border-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none`}
         type="button"
         tabIndex={-1}
-        style={{ color: "var(--text-strong)" }}
+        style={{
+          color: hover && !active ? "var(--text-hover)" : "var(--text-strong)",
+        }}
       >
         {label}
       </Button>
