@@ -7,6 +7,8 @@ import {
   useSensors,
   PointerSensor,
   DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -16,6 +18,15 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "./ui/dropdown-menu";
 
 interface Page {
   id: string;
@@ -28,10 +39,12 @@ export default function PageMenu() {
     { id: "2", label: "Details" },
     { id: "3", label: "Other" },
     { id: "4", label: "Ending" },
+    { id: "5", label: "Add page" },
   ]);
   const [activePageId, setActivePageId] = useState<string>(pages[0].id);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [activeItem, setActiveItem] = useState<Page | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -41,8 +54,17 @@ export default function PageMenu() {
     })
   );
 
+  function handleDragStart(event: DragStartEvent) {
+    setIsDragging(true);
+    const draggedItem = pages.find((p) => p.id === event.active.id);
+    if (draggedItem) {
+      setActiveItem(draggedItem);
+    }
+  }
+
   function handleDragEnd(event: DragEndEvent) {
     setIsDragging(false);
+    setActiveItem(null);
     const { active, over } = event;
     if (over && active.id !== over.id) {
       setPages((currentPages) => {
@@ -68,7 +90,7 @@ export default function PageMenu() {
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
-      onDragStart={() => setIsDragging(true)}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       <SortableContext
@@ -76,14 +98,13 @@ export default function PageMenu() {
         strategy={horizontalListSortingStrategy}
       >
         <nav
-          className="flex gap-0 items-center p-4 bg-gray-50 rounded-lg"
+          className="flex items-center p-2 bg-gray-100 rounded-lg"
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AddPageSlot
-            showButton={hoveredIndex === -1}
+            showButton={hoveredIndex === -1 && !isDragging}
             onHover={() => setHoveredIndex(-1)}
             onAdd={() => addPage(0)}
-            isDragging={isDragging}
           />
           {pages.map((page, idx) => (
             <React.Fragment key={page.id}>
@@ -94,15 +115,24 @@ export default function PageMenu() {
                 onClick={() => setActivePageId(page.id)}
               />
               <AddPageSlot
-                showButton={hoveredIndex === idx}
+                showButton={hoveredIndex === idx && !isDragging}
                 onHover={() => setHoveredIndex(idx)}
                 onAdd={() => addPage(idx + 1)}
-                isDragging={isDragging}
               />
             </React.Fragment>
           ))}
         </nav>
       </SortableContext>
+      <DragOverlay>
+        {activeItem ? (
+          <SortablePageItem
+            id={activeItem.id}
+            label={activeItem.label}
+            active={true}
+            onClick={() => {}}
+          />
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 }
@@ -118,31 +148,79 @@ function SortablePageItem({
   active: boolean;
   onClick: () => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     cursor: "grab",
+    opacity: isDragging ? 0 : 1,
   };
 
   return (
-    <button
+    <div
       ref={setNodeRef}
       style={style}
+      className={`flex items-center rounded-md transition-all duration-150 whitespace-nowrap mx-1 ${
+        active ? "ring-2 ring-blue-500 bg-blue-50" : ""
+      }`}
       {...listeners}
       {...attributes}
-      onClick={onClick}
-      className={`px-4 py-2 rounded-md border shadow-sm transition-all duration-150 whitespace-nowrap ${
-        active
-          ? "bg-blue-600 text-white border-blue-700 shadow-md"
-          : "bg-white hover:bg-gray-100 border-gray-200"
-      }`}
-      type="button"
     >
-      {label}
-    </button>
+      <Button
+        variant={active ? "default" : "secondary"}
+        onClick={onClick}
+        className={`flex-1 px-3 py-1.5 h-auto text-sm font-normal border-transparent shadow-none transition-all duration-150 whitespace-nowrap ${
+          active
+            ? "bg-blue-600 text-white"
+            : "bg-white hover:bg-gray-100 text-gray-700"
+        }`}
+        type="button"
+      >
+        {label}
+      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-auto px-1 py-1 text-gray-500 hover:text-gray-900"
+          >
+            <span className="sr-only">Open menu</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="10" cy="4" r="1.5" />
+              <circle cx="10" cy="10" r="1.5" />
+              <circle cx="10" cy="16" r="1.5" />
+            </svg>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Settings</DropdownMenuLabel>
+          <DropdownMenuItem>Set as first page</DropdownMenuItem>
+          <DropdownMenuItem>Rename</DropdownMenuItem>
+          <DropdownMenuItem>Copy</DropdownMenuItem>
+          <DropdownMenuItem>Duplicate</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
 
@@ -151,22 +229,20 @@ function AddPageSlot({
   showButton,
   onHover,
   onAdd,
-  isDragging,
 }: {
   showButton: boolean;
   onHover: () => void;
   onAdd: () => void;
-  isDragging: boolean;
 }) {
   return (
     <div
       onMouseEnter={onHover}
-      className="relative h-10 w-4 flex items-center justify-center"
+      className="relative h-9 w-2 flex items-center justify-center"
     >
-      {showButton && !isDragging && (
+      {showButton && (
         <button
           onClick={onAdd}
-          className="absolute z-10 w-6 h-6 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-bold border-2 border-white shadow-md transition-all duration-150"
+          className="absolute z-10 w-5 h-5 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 text-white text-base font-bold border-2 border-white shadow-md transition-all duration-150"
           aria-label="Add page"
           type="button"
         >
