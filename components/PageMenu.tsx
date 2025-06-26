@@ -30,8 +30,8 @@ export default function PageMenu() {
     { id: "4", label: "Ending" },
   ]);
   const [activePageId, setActivePageId] = useState<string>(pages[0].id);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // Configure the pointer sensor to have a small activation delay, allowing onClick to fire
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -72,19 +72,28 @@ export default function PageMenu() {
         items={pages.map((p) => p.id)}
         strategy={horizontalListSortingStrategy}
       >
-        <nav className="flex gap-2 items-center">
-          <AddButton onClick={() => addPage(0)} />
+        <nav
+          className="flex gap-0 items-center p-4 bg-gray-50 rounded-lg"
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
+          <AddPageSlot
+            showButton={hoveredIndex === -1}
+            onHover={() => setHoveredIndex(-1)}
+            onAdd={() => addPage(0)}
+          />
           {pages.map((page, idx) => (
             <React.Fragment key={page.id}>
               <SortablePageItem
                 id={page.id}
                 label={page.label}
                 active={activePageId === page.id}
-                onClick={() => {
-                  setActivePageId(page.id);
-                }}
+                onClick={() => setActivePageId(page.id)}
               />
-              <AddButton onClick={() => addPage(idx + 1)} />
+              <AddPageSlot
+                showButton={hoveredIndex === idx}
+                onHover={() => setHoveredIndex(idx)}
+                onAdd={() => addPage(idx + 1)}
+              />
             </React.Fragment>
           ))}
         </nav>
@@ -120,8 +129,10 @@ function SortablePageItem({
       {...listeners}
       {...attributes}
       onClick={onClick}
-      className={`px-3 py-1 rounded border shadow-sm transition-colors duration-150 ${
-        active ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+      className={`px-4 py-2 rounded-md border shadow-sm transition-all duration-150 whitespace-nowrap ${
+        active
+          ? "bg-blue-600 text-white border-blue-700 shadow-md"
+          : "bg-white hover:bg-gray-100 border-gray-200"
       }`}
       type="button"
     >
@@ -130,15 +141,35 @@ function SortablePageItem({
   );
 }
 
-function AddButton({ onClick }: { onClick: () => void }) {
+// A hoverable slot that shows an add button
+function AddPageSlot({
+  showButton,
+  onHover,
+  onAdd,
+}: {
+  showButton: boolean;
+  onHover: () => void;
+  onAdd: () => void;
+}) {
   return (
-    <button
-      onClick={onClick}
-      className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-blue-200 text-blue-600 text-lg font-bold border border-gray-300 transition-colors duration-150"
-      aria-label="Add page"
-      type="button"
+    <div
+      onMouseEnter={onHover}
+      className="relative h-10 w-4 flex items-center justify-center"
     >
-      +
-    </button>
+      {showButton && (
+        <button
+          onClick={onAdd}
+          className="absolute z-10 w-6 h-6 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-bold border-2 border-white shadow-md transition-all duration-150"
+          aria-label="Add page"
+          type="button"
+        >
+          +
+        </button>
+      )}
+    </div>
   );
 }
+
+/*
+Are the info and the add page buttons on the menu also draggable?
+*/
