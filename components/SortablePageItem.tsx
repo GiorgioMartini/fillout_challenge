@@ -45,19 +45,32 @@ export function SortablePageItem({
   return (
     <div
       ref={setNodeRef}
-      style={style}
+      style={{
+        ...style,
+        boxShadow:
+          !active && document.activeElement === null ? undefined : undefined,
+      }}
       className={cn(
         "flex items-center rounded-[8px] bg-white shadow-[0px_1px_3px_0px_rgba(0,0,0,0.04),0px_1px_1px_0px_rgba(0,0,0,0.02)] h-8 px-[10px] py-1 gap-[6px] select-none transition-all duration-150 whitespace-nowrap mx-1",
         "hover:bg-[#F2F2F2]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F80ED]",
         {
+          "border-2 border-[#2F80ED] focus-visible:z-10": !active,
           "border border-transparent": active,
           "border border-[#E1E1E1]": !active,
         }
       )}
+      tabIndex={0}
       {...listeners}
       {...attributes}
-      tabIndex={0}
+      onFocus={(e) => {
+        if (!active) {
+          e.currentTarget.style.boxShadow =
+            "0 0 0 4px #D1E9FF, 0 0 0 0 #2F80ED";
+        }
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.boxShadow = "none";
+      }}
     >
       <FileText size={20} style={{ color: "var(--icon-accent)" }} />
       <Button
