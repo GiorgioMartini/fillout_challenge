@@ -242,14 +242,16 @@ function AddPageSlot({
       className="relative h-9 w-2 flex items-center justify-center"
     >
       {showButton && (
-        <button
+        <Button
           onClick={onAdd}
-          className="absolute z-10 w-5 h-5 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 text-white text-base font-bold border-2 border-white shadow-md transition-all duration-150"
+          variant="secondary"
+          size="sm"
+          className="absolute z-10 w-5 h-5 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 text-white text-base font-bold border-2 border-white shadow-md transition-all duration-150 p-0"
           aria-label="Add page"
           type="button"
         >
           +
-        </button>
+        </Button>
       )}
     </div>
   );
