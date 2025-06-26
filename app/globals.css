@@ -25,6 +25,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-background-hover: var(--background-hover);
+  --color-background-muted: var(--background-muted);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -54,6 +55,7 @@
   --ring: #2f80ed;
   --icon-accent: #f59d0e;
   --background-hover: #f2f2f2;
+  --background-muted: rgba(157, 164, 178, 0.15);
 }
 
 .dark {

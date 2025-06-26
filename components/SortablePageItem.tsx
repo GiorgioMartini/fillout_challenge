@@ -47,11 +47,12 @@ export function SortablePageItem({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "flex items-center rounded-lg bg-white h-8 px-2.5 py-1 gap-1.5 select-none transition-all duration-150 whitespace-nowrap mx-1 border",
+        "flex items-center rounded-lg h-8 px-2.5 py-1 gap-1.5 select-none transition-all duration-150 whitespace-nowrap mx-1 border",
         {
+          "bg-white": active,
+          "bg-background-muted": !active,
           "border-transparent": active,
           "border-border": !active,
-          "bg-card": active,
           "hover:bg-background-hover": !active,
           "focus-visible:ring-4 focus-visible:ring-[#D1E9FF] focus-visible:border-ring focus-visible:z-10":
             !active,
