@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   DndContext,
   closestCenter,
@@ -36,6 +36,12 @@ export default function PageMenu() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [activeItem, setActiveItem] = useState<Page | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const nextPageId = useRef(pages.length + 1);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -67,14 +73,20 @@ export default function PageMenu() {
   }
 
   function addPage(index: number) {
+    const newId = nextPageId.current;
     const newPage: Page = {
-      id: Date.now().toString(),
-      label: `Page ${pages.length + 1}`,
+      id: newId.toString(),
+      label: `Page ${newId}`,
     };
+    nextPageId.current++;
     const updated = [...pages];
     updated.splice(index, 0, newPage);
     setPages(updated);
     setActivePageId(newPage.id);
+  }
+
+  if (!isClient) {
+    return null;
   }
 
   return (
