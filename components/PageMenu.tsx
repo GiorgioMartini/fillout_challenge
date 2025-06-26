@@ -186,40 +186,42 @@ function SortablePageItem({
       >
         {label}
       </Button>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-auto px-1 py-1 text-gray-500 hover:text-gray-900"
-          >
-            <span className="sr-only">Open menu</span>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 20 20"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+      {active && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-auto px-1 py-1 text-gray-500 hover:text-gray-900"
             >
-              <circle cx="10" cy="4" r="1.5" />
-              <circle cx="10" cy="10" r="1.5" />
-              <circle cx="10" cy="16" r="1.5" />
-            </svg>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Settings</DropdownMenuLabel>
-          <DropdownMenuItem>Set as first page</DropdownMenuItem>
-          <DropdownMenuItem>Rename</DropdownMenuItem>
-          <DropdownMenuItem>Copy</DropdownMenuItem>
-          <DropdownMenuItem>Duplicate</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+              <span className="sr-only">Open menu</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="10" cy="4" r="1.5" />
+                <circle cx="10" cy="10" r="1.5" />
+                <circle cx="10" cy="16" r="1.5" />
+              </svg>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Settings</DropdownMenuLabel>
+            <DropdownMenuItem>Set as first page</DropdownMenuItem>
+            <DropdownMenuItem>Rename</DropdownMenuItem>
+            <DropdownMenuItem>Copy</DropdownMenuItem>
+            <DropdownMenuItem>Duplicate</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 }
