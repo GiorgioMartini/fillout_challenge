@@ -10,12 +10,13 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
-import { FileText } from "lucide-react";
+import { FileText, Info, CheckCircle, Plus } from "lucide-react";
 import { cn } from "../lib/utils";
 
 interface SortablePageItemProps {
   id: string;
   label: string;
+  type: string;
   active: boolean;
   onClick: () => void;
 }
@@ -23,6 +24,7 @@ interface SortablePageItemProps {
 export function SortablePageItem({
   id,
   label,
+  type,
   active,
   onClick,
 }: SortablePageItemProps) {
@@ -43,6 +45,12 @@ export function SortablePageItem({
   };
 
   const [hover, setHover] = React.useState(false);
+
+  // Icon selection logic
+  let IconComponent = FileText;
+  if (type === "info") IconComponent = Info;
+  else if (type === "ending") IconComponent = CheckCircle;
+  else if (type === "add") IconComponent = Plus;
 
   return (
     <div
@@ -71,7 +79,7 @@ export function SortablePageItem({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <FileText
+      <IconComponent
         size={20}
         style={{
           color: hover && !active ? "var(--icon-hover)" : "var(--icon-accent)",

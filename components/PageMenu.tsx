@@ -22,15 +22,16 @@ import { AddPageSlot } from "./AddPageSlot";
 interface Page {
   id: string;
   label: string;
+  type: string;
 }
 
 export default function PageMenu() {
   const [pages, setPages] = useState<Page[]>([
-    { id: "1", label: "Info" },
-    { id: "2", label: "Details" },
-    { id: "3", label: "Other" },
-    { id: "4", label: "Ending" },
-    { id: "5", label: "Add page" },
+    { id: "1", label: "Info", type: "info" },
+    { id: "2", label: "Details", type: "details" },
+    { id: "3", label: "Other", type: "details" },
+    { id: "4", label: "Ending", type: "ending" },
+    { id: "5", label: "Add page", type: "add" },
   ]);
   const [activePageId, setActivePageId] = useState<string>(pages[0].id);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -77,6 +78,7 @@ export default function PageMenu() {
     const newPage: Page = {
       id: newId.toString(),
       label: `Page ${newId}`,
+      type: "details",
     };
     nextPageId.current++;
     const updated = [...pages];
@@ -114,6 +116,7 @@ export default function PageMenu() {
               <SortablePageItem
                 id={page.id}
                 label={page.label}
+                type={page.type}
                 active={activePageId === page.id}
                 onClick={() => setActivePageId(page.id)}
               />
@@ -131,6 +134,7 @@ export default function PageMenu() {
           <SortablePageItem
             id={activeItem.id}
             label={activeItem.label}
+            type={activeItem.type}
             active={true}
             onClick={() => {}}
           />
