@@ -31,6 +31,7 @@ export default function PageMenu() {
   ]);
   const [activePageId, setActivePageId] = useState<string>(pages[0].id);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -41,6 +42,7 @@ export default function PageMenu() {
   );
 
   function handleDragEnd(event: DragEndEvent) {
+    setIsDragging(false);
     const { active, over } = event;
     if (over && active.id !== over.id) {
       setPages((currentPages) => {
@@ -66,6 +68,7 @@ export default function PageMenu() {
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
+      onDragStart={() => setIsDragging(true)}
       onDragEnd={handleDragEnd}
     >
       <SortableContext
@@ -80,6 +83,7 @@ export default function PageMenu() {
             showButton={hoveredIndex === -1}
             onHover={() => setHoveredIndex(-1)}
             onAdd={() => addPage(0)}
+            isDragging={isDragging}
           />
           {pages.map((page, idx) => (
             <React.Fragment key={page.id}>
@@ -93,6 +97,7 @@ export default function PageMenu() {
                 showButton={hoveredIndex === idx}
                 onHover={() => setHoveredIndex(idx)}
                 onAdd={() => addPage(idx + 1)}
+                isDragging={isDragging}
               />
             </React.Fragment>
           ))}
@@ -146,17 +151,19 @@ function AddPageSlot({
   showButton,
   onHover,
   onAdd,
+  isDragging,
 }: {
   showButton: boolean;
   onHover: () => void;
   onAdd: () => void;
+  isDragging: boolean;
 }) {
   return (
     <div
       onMouseEnter={onHover}
       className="relative h-10 w-4 flex items-center justify-center"
     >
-      {showButton && (
+      {showButton && !isDragging && (
         <button
           onClick={onAdd}
           className="absolute z-10 w-6 h-6 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-bold border-2 border-white shadow-md transition-all duration-150"
