@@ -10,6 +10,8 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
+import { FileText } from "lucide-react";
+import { cn } from "../lib/utils";
 
 interface SortablePageItemProps {
   id: string;
@@ -44,21 +46,26 @@ export function SortablePageItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center rounded-md transition-all duration-150 whitespace-nowrap mx-1 ${
-        active ? "ring-2 ring-blue-500 bg-blue-50" : ""
-      }`}
+      className={cn(
+        "flex items-center rounded-[8px] bg-white shadow-[0px_1px_3px_0px_rgba(0,0,0,0.04),0px_1px_1px_0px_rgba(0,0,0,0.02)] h-8 px-[10px] py-1 gap-[6px] select-none transition-all duration-150 whitespace-nowrap mx-1",
+        "hover:bg-[#F2F2F2]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F80ED]",
+        {
+          "border border-transparent": active,
+          "border border-[#E1E1E1]": !active,
+        }
+      )}
       {...listeners}
       {...attributes}
+      tabIndex={0}
     >
+      <FileText size={20} style={{ color: "var(--icon-accent)" }} />
       <Button
-        variant={active ? "default" : "secondary"}
+        variant={"ghost"}
         onClick={onClick}
-        className={`flex-1 px-3 py-1.5 h-auto text-sm font-normal border-transparent shadow-none transition-all duration-150 whitespace-nowrap ${
-          active
-            ? "bg-blue-600 text-white"
-            : "bg-white hover:bg-gray-100 text-gray-700"
-        }`}
+        className={`px-0 py-0 h-8 min-w-0 text-[14px] font-medium leading-[1.43] tracking-[-0.015em] text-[#1A1A1A] bg-transparent shadow-none border-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none`}
         type="button"
+        tabIndex={-1}
       >
         {label}
       </Button>
@@ -68,7 +75,7 @@ export function SortablePageItem({
             <Button
               variant="ghost"
               size="icon"
-              className="h-auto px-1 py-1 text-gray-500 hover:text-gray-900"
+              className="h-auto px-1 py-1 text-[#9DA4B2] hover:text-gray-900"
             >
               <span className="sr-only">Open menu</span>
               <svg
