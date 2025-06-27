@@ -172,10 +172,3 @@ export default function PageMenu() {
     </DndContext>
   );
 }
-
-/*
-Are the info and the add page buttons on the menu also draggable?
-
-TODO:
-plus icon between itmes animation + remove from outter sides
-*/
