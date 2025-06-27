@@ -27,9 +27,10 @@ export function SortablePageItem({
   onItemHover,
   onAdd,
 }: SortablePageItemProps) {
-  // Disable dragging only for "add" type items
+  // Disable dragging for "add" and "info" type items
   const isAddType = type === "add";
-  const isDragDisabled = isAddType;
+  const isInfoType = type === "info";
+  const isDragDisabled = isAddType || isInfoType;
 
   const {
     attributes,
@@ -43,7 +44,7 @@ export function SortablePageItem({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    cursor: isAddType ? "pointer" : "grab", // Different cursor for add type
+    cursor: isAddType || isInfoType ? "pointer" : "grab", // Different cursor for non-draggable items
     opacity: isDragging ? 0 : 1,
   };
 
@@ -78,8 +79,8 @@ export function SortablePageItem({
             !active,
         }
       )}
-      {...(!isAddType ? listeners : {})} // No drag listeners for add type items
-      {...(!isAddType ? attributes : {})} // No drag attributes for add type items
+      {...(!(isAddType || isInfoType) ? listeners : {})} // No drag listeners for non-draggable items
+      {...(!(isAddType || isInfoType) ? attributes : {})} // No drag attributes for non-draggable items
       onMouseEnter={() => {
         setHover(true);
         onItemHover?.(); // Clear AddPageSlot hover state when entering an item
@@ -110,7 +111,8 @@ export function SortablePageItem({
         {label}
       </Button>
       {active &&
-        !isAddType && ( // Don't show settings menu for add type items
+        !isAddType &&
+        !isInfoType && ( // Don't show settings menu for non-draggable items
           <PageItemSettingsMenu>
             <Button
               variant="ghost"

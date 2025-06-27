@@ -69,6 +69,12 @@ export default function PageMenu() {
         const oldIndex = currentPages.findIndex((p) => p.id === active.id);
         let newIndex = currentPages.findIndex((p) => p.id === over.id);
 
+        // Ensure "Info" item always remains the first item
+        // Don't allow any item to be moved to position 0
+        if (newIndex === 0) {
+          newIndex = 1; // Place just after the "Info" item
+        }
+
         // Ensure "Add page" button always remains the last item
         // Don't allow any item to be moved past the second-to-last position
         const addPageIndex = currentPages.findIndex((p) => p.type === "add");
