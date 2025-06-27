@@ -24,8 +24,6 @@ export function SortablePageItem({
   type,
   active,
   onClick,
-  index,
-  total,
   onItemHover,
   onAdd,
 }: SortablePageItemProps) {
