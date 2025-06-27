@@ -15,6 +15,7 @@ interface SortablePageItemProps {
   index: number;
   total: number;
   onItemHover?: () => void; // Add handler to clear AddPageSlot hover state
+  onAdd?: () => void; // Handler for adding a new page (used when type === "add")
 }
 
 export function SortablePageItem({
@@ -26,7 +27,12 @@ export function SortablePageItem({
   index,
   total,
   onItemHover,
+  onAdd,
 }: SortablePageItemProps) {
+  // Disable dragging only for "add" type items
+  const isAddType = type === "add";
+  const isDragDisabled = isAddType;
+
   const {
     attributes,
     listeners,
@@ -34,12 +40,12 @@ export function SortablePageItem({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id, disabled: index === 0 || index === total - 1 });
+  } = useSortable({ id, disabled: isDragDisabled });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    cursor: "grab",
+    cursor: isAddType ? "pointer" : "grab", // Different cursor for add type
     opacity: isDragging ? 0 : 1,
   };
 
@@ -74,14 +80,14 @@ export function SortablePageItem({
             !active,
         }
       )}
-      {...listeners}
-      {...attributes}
+      {...(!isAddType ? listeners : {})} // No drag listeners for add type items
+      {...(!isAddType ? attributes : {})} // No drag attributes for add type items
       onMouseEnter={() => {
         setHover(true);
         onItemHover?.(); // Clear AddPageSlot hover state when entering an item
       }}
       onMouseLeave={() => setHover(false)}
-      onClick={onClick}
+      onClick={isAddType ? onAdd : onClick} // Use onAdd for add type items
     >
       <IconComponent
         size={20}
@@ -95,7 +101,7 @@ export function SortablePageItem({
       />
       <Button
         variant={"ghost"}
-        onClick={onClick}
+        onClick={isAddType ? onAdd : onClick} // Use onAdd for add type items
         className={`px-0 py-0 h-8 min-w-0 text-[14px] font-medium leading-[1.43] tracking-[-0.015em] bg-transparent shadow-none border-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none`}
         type="button"
         tabIndex={-1}
@@ -105,20 +111,21 @@ export function SortablePageItem({
       >
         {label}
       </Button>
-      {active && (
-        <PageItemSettingsMenu>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-auto px-1 py-1 text-muted-foreground hover:text-foreground"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering the item click
-            }}
-          >
-            <MoreVertical size={16} />
-          </Button>
-        </PageItemSettingsMenu>
-      )}
+      {active &&
+        !isAddType && ( // Don't show settings menu for add type items
+          <PageItemSettingsMenu>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-auto px-1 py-1 text-muted-foreground hover:text-foreground"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent triggering the item click
+              }}
+            >
+              <MoreVertical size={16} />
+            </Button>
+          </PageItemSettingsMenu>
+        )}
     </div>
   );
 }

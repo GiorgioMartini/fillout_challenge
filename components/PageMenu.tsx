@@ -67,7 +67,15 @@ export default function PageMenu() {
     if (over && active.id !== over.id) {
       setPages((currentPages) => {
         const oldIndex = currentPages.findIndex((p) => p.id === active.id);
-        const newIndex = currentPages.findIndex((p) => p.id === over.id);
+        let newIndex = currentPages.findIndex((p) => p.id === over.id);
+
+        // Ensure "Add page" button always remains the last item
+        // Don't allow any item to be moved past the second-to-last position
+        const addPageIndex = currentPages.findIndex((p) => p.type === "add");
+        if (newIndex >= addPageIndex) {
+          newIndex = addPageIndex - 1; // Place just before the "Add page" button
+        }
+
         return arrayMove(currentPages, oldIndex, newIndex);
       });
     }
@@ -122,6 +130,11 @@ export default function PageMenu() {
                 index={idx}
                 total={pages.length}
                 onItemHover={() => setHoveredIndex(null)} // Clear AddPageSlot hover when entering an item
+                onAdd={
+                  page.type === "add"
+                    ? () => addPage(pages.length - 1)
+                    : undefined
+                } // Add page before the "Add page" button
               />
               <AddPageSlot
                 showButton={hoveredIndex === idx && !isDragging}
@@ -142,6 +155,11 @@ export default function PageMenu() {
             onClick={() => {}}
             index={pages.findIndex((p) => p.id === activeItem.id)}
             total={pages.length}
+            onAdd={
+              activeItem.type === "add"
+                ? () => addPage(pages.length - 1)
+                : undefined
+            }
           />
         ) : null}
       </DragOverlay>
