@@ -14,6 +14,7 @@ interface SortablePageItemProps {
   onClick: () => void;
   index: number;
   total: number;
+  onItemHover?: () => void; // Add handler to clear AddPageSlot hover state
 }
 
 export function SortablePageItem({
@@ -24,6 +25,7 @@ export function SortablePageItem({
   onClick,
   index,
   total,
+  onItemHover,
 }: SortablePageItemProps) {
   const {
     attributes,
@@ -73,7 +75,10 @@ export function SortablePageItem({
       )}
       {...listeners}
       {...attributes}
-      onMouseEnter={() => setHover(true)}
+      onMouseEnter={() => {
+        setHover(true);
+        onItemHover?.(); // Clear AddPageSlot hover state when entering an item
+      }}
       onMouseLeave={() => setHover(false)}
       onClick={onClick}
     >

@@ -121,6 +121,7 @@ export default function PageMenu() {
                 onClick={() => setActivePageId(page.id)}
                 index={idx}
                 total={pages.length}
+                onItemHover={() => setHoveredIndex(null)} // Clear AddPageSlot hover when entering an item
               />
               <AddPageSlot
                 showButton={hoveredIndex === idx && !isDragging}
