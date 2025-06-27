@@ -3,8 +3,13 @@ import PageMenu from "../components/PageMenu";
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <PageMenu />
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start"></main>
+      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        {/* Main content here */}
+      </main>
+      {/* PageMenu is now in the last row, at the bottom of the screen */}
+      <div className="row-start-3">
+        <PageMenu />
+      </div>
     </div>
   );
 }
