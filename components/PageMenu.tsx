@@ -138,7 +138,7 @@ export default function PageMenu() {
             id={activeItem.id}
             label={activeItem.label}
             type={activeItem.type}
-            active={false}
+            active={activePageId === activeItem.id}
             onClick={() => {}}
             index={pages.findIndex((p) => p.id === activeItem.id)}
             total={pages.length}

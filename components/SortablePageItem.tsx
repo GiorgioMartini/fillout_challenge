@@ -54,21 +54,22 @@ export function SortablePageItem({
   return (
     <div
       ref={setNodeRef}
-      style={{
-        ...style,
-        boxShadow: active ? "var(--shadow-elevation-1)" : undefined,
-        borderWidth: active ? 0.5 : undefined,
-        borderStyle: active ? "solid" : undefined,
-        borderColor: active ? "var(--border)" : undefined,
-      }}
+      style={style}
       className={cn(
+        // Base styles
         "flex items-center rounded-lg h-8 px-[10px] py-1 gap-2 select-none transition-all duration-150 whitespace-nowrap mx-1",
+        "border border-solid",
+        // State-based styles using data attributes and CSS classes
         {
-          "bg-white": active,
-          "bg-background-muted": !active && !hover,
-          "bg-background-hover-strong": !active && hover,
-          "border-transparent": active,
-          "border-border": !active,
+          // Active state
+          "bg-white border-[var(--border)] shadow-[var(--shadow-elevation-1)]":
+            active,
+
+          // Inactive states
+          "bg-background-muted border-border": !active && !hover,
+          "bg-background-hover-strong border-border": !active && hover,
+
+          // Focus styles (only for inactive items)
           "focus-visible:ring-4 focus-visible:ring-[#D1E9FF] focus-visible:border-ring focus-visible:z-10":
             !active,
         }
@@ -86,6 +87,10 @@ export function SortablePageItem({
         size={20}
         style={{
           color: hover && !active ? "var(--icon-hover)" : "var(--icon-accent)",
+          // Ensure icon maintains exact size during dragging/transforms
+          width: 20,
+          height: 20,
+          flexShrink: 0,
         }}
       />
       <Button
