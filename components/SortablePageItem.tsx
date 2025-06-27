@@ -10,7 +10,17 @@ import {
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
-import { FileText, Info, CheckCircle, Plus } from "lucide-react";
+import {
+  FileText,
+  Info,
+  CheckCircle,
+  Plus,
+  Flag,
+  Pencil,
+  Copy,
+  Layers,
+  Trash2,
+} from "lucide-react";
 import { cn } from "../lib/utils";
 
 interface SortablePageItemProps {
@@ -126,14 +136,56 @@ export function SortablePageItem({
               </svg>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Settings</DropdownMenuLabel>
-            <DropdownMenuItem>Set as first page</DropdownMenuItem>
-            <DropdownMenuItem>Rename</DropdownMenuItem>
-            <DropdownMenuItem>Copy</DropdownMenuItem>
-            <DropdownMenuItem>Duplicate</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+          <DropdownMenuContent
+            align="end"
+            className="w-48"
+            style={{
+              borderRadius: "12px",
+              padding: "0",
+              boxShadow: "var(--shadow-elevation-1)",
+              border: "0.5px solid var(--border)",
+            }}
+          >
+            <DropdownMenuLabel
+              style={{
+                padding: "12px",
+                background: "#FAFBFC",
+                borderBottom: "0.5px solid var(--border)",
+                borderTopLeftRadius: "12px",
+                borderTopRightRadius: "12px",
+                fontWeight: 500,
+                fontSize: "16px",
+                color: "var(--text-strong)",
+              }}
+            >
+              Settings
+            </DropdownMenuLabel>
+            <div style={{ padding: "12px" }}>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Flag size={16} color="var(--ring)" />
+                <span>Set as first page</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Pencil size={16} color="var(--icon-secondary)" />
+                <span>Rename</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Copy size={16} color="var(--icon-secondary)" />
+                <span>Copy</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Layers size={16} color="var(--icon-secondary)" />
+                <span>Duplicate</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                variant="destructive"
+                className="flex items-center gap-2 text-[var(--destructive-danger)]"
+              >
+                <Trash2 size={16} color="var(--destructive-danger)" />
+                <span>Delete</span>
+              </DropdownMenuItem>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       )}

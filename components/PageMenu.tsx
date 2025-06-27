@@ -137,7 +137,7 @@ export default function PageMenu() {
             id={activeItem.id}
             label={activeItem.label}
             type={activeItem.type}
-            active={true}
+            active={false}
             onClick={() => {}}
             index={pages.findIndex((p) => p.id === activeItem.id)}
             total={pages.length}
@@ -152,8 +152,6 @@ export default function PageMenu() {
 Are the info and the add page buttons on the menu also draggable?
 
 TODO:
-remove add page from draggable items
-remove hover effect when hovering
 menu styling
 plus icon between itmes animation + remove from outter sides
 */
