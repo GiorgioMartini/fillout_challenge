@@ -119,6 +119,8 @@ export default function PageMenu() {
                 type={page.type}
                 active={activePageId === page.id}
                 onClick={() => setActivePageId(page.id)}
+                index={idx}
+                total={pages.length}
               />
               <AddPageSlot
                 showButton={hoveredIndex === idx && !isDragging}
@@ -137,6 +139,8 @@ export default function PageMenu() {
             type={activeItem.type}
             active={true}
             onClick={() => {}}
+            index={pages.findIndex((p) => p.id === activeItem.id)}
+            total={pages.length}
           />
         ) : null}
       </DragOverlay>
@@ -146,4 +150,10 @@ export default function PageMenu() {
 
 /*
 Are the info and the add page buttons on the menu also draggable?
+
+TODO:
+remove add page from draggable items
+remove hover effect when hovering
+menu styling
+plus icon between itmes animation + remove from outter sides
 */

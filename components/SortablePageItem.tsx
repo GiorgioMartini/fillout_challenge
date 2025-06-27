@@ -19,6 +19,8 @@ interface SortablePageItemProps {
   type: string;
   active: boolean;
   onClick: () => void;
+  index: number;
+  total: number;
 }
 
 export function SortablePageItem({
@@ -27,6 +29,8 @@ export function SortablePageItem({
   type,
   active,
   onClick,
+  index,
+  total,
 }: SortablePageItemProps) {
   const {
     attributes,
@@ -35,7 +39,7 @@ export function SortablePageItem({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id, disabled: index === 0 || index === total - 1 });
 
   const style = {
     transform: CSS.Transform.toString(transform),
