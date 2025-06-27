@@ -49,7 +49,7 @@ export function SortablePageItem({
   else if (type === "ending") IconComponent = CheckCircle;
   else if (type === "add") IconComponent = Plus;
 
-  const itemComponent = (
+  return (
     <div
       ref={setNodeRef}
       style={{
@@ -75,7 +75,7 @@ export function SortablePageItem({
       {...attributes}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onClick={!active ? onClick : undefined}
+      onClick={onClick}
     >
       <IconComponent
         size={20}
@@ -96,17 +96,19 @@ export function SortablePageItem({
         {label}
       </Button>
       {active && (
-        <div className="h-auto px-1 py-1 text-muted-foreground">
-          <MoreVertical size={16} />
-        </div>
+        <PageItemSettingsMenu>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-auto px-1 py-1 text-muted-foreground hover:text-foreground"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent triggering the item click
+            }}
+          >
+            <MoreVertical size={16} />
+          </Button>
+        </PageItemSettingsMenu>
       )}
     </div>
   );
-
-  // Wrap with settings menu only when active
-  if (active) {
-    return <PageItemSettingsMenu>{itemComponent}</PageItemSettingsMenu>;
-  }
-
-  return itemComponent;
 }

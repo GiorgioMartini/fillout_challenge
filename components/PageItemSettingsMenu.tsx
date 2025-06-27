@@ -9,7 +9,7 @@ import {
 import { Flag, Pencil, Copy, Layers, Trash2 } from "lucide-react";
 
 interface PageItemSettingsMenuProps {
-  children: React.ReactNode; // The trigger element
+  children: React.ReactNode;
 }
 
 export function PageItemSettingsMenu({ children }: PageItemSettingsMenuProps) {
@@ -18,6 +18,7 @@ export function PageItemSettingsMenu({ children }: PageItemSettingsMenuProps) {
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"
+        alignOffset={-147}
         className="w-48"
         style={{
           borderRadius: "12px",
